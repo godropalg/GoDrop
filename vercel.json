@@ -2,50 +2,30 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/files.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/apifiles.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/apistats.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/apidownload[code].js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "api/apisave.js",
+      "src": "api/*.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/files",
-      "dest": "/api/files.js"
+      "dest": "/api/getfiles.js"
+    },
+    {
+      "src": "/api/download/:code",
+      "dest": "/api/download.js?code=$1"
+    },
+    {
+      "src": "/api/save",
+      "dest": "/api/savefile.js"
     },
     {
       "src": "/api/stats",
       "dest": "/api/apistats.js"
     },
     {
-      "src": "/api/save",
-      "dest": "/api/apisave.js"
-    },
-    {
-      "src": "/api/download",
-      "dest": "/api/apifiles.js"
-    },
-    {
       "src": "/",
       "dest": "/index.html"
-    },
-    {
-      "src": "/mobile",
-      "dest": "/mobile.html"
     }
   ]
 }
