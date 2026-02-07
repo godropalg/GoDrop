@@ -1,114 +1,75 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FileDrop Simple - Condividi File Gratis Online</title>
-    <meta name="description" content="Condividi file GRATIS fino a 5GB. Nessuna registrazione, nessun abbonamento. Trasferisci file velocemente online.">
-    <meta name="keywords" content="condividi file, trasferimento file, upload file, file sharing, gratis">
+    <title>GoDrop - Test</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; color: white; padding: 30px 0; }
-        .header h1 { font-size: 2.8rem; margin-bottom: 10px; }
-        .upload-area {
-            background: white; border-radius: 20px; padding: 40px; 
-            text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            margin: 30px 0;
-        }
-        .upload-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; border: none; padding: 15px 40px;
-            font-size: 1.2rem; border-radius: 50px; cursor: pointer;
-            margin: 20px 0; font-weight: bold;
-        }
-        .upload-btn:hover { transform: scale(1.05); }
-        .file-list { background: white; border-radius: 15px; padding: 30px; margin: 30px 0; }
-        .footer { text-align: center; color: white; padding: 40px 0; margin-top: 50px; }
-        @media (max-width: 768px) {
-            .header h1 { font-size: 2rem; }
-            .upload-area { padding: 25px 15px; }
-        }
+        body { font-family: Arial; background: #667eea; color: white; padding: 40px; text-align: center; }
+        .box { background: white; padding: 30px; border-radius: 15px; max-width: 500px; margin: 0 auto; color: #333; }
+        .test-btn { background: #4CAF50; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 1.2rem; cursor: pointer; margin: 15px; }
+        #result { margin-top: 20px; padding: 15px; border-radius: 10px; display: none; }
     </style>
 </head>
 <body>
-    <div class="header container">
-        <h1>🚀 FileDrop Simple</h1>
-        <p>Condividi file fino a 5GB • 100% Gratuito • Nessuna Registrazione</p>
+    <h1>🧪 GoDrop - Test API</h1>
+    <div class="box">
+        <h2>Test Connessione Backend</h2>
+        <p>Codici disponibili: <strong>TEST</strong> o <strong>ABCD</strong></p>
+        
+        <input type="text" id="codeInput" value="TEST" style="padding: 10px; width: 80px; text-align: center; font-size: 1.2rem;">
+        <button class="test-btn" onclick="testApi()">🔍 TESTA API</button>
+        
+        <div id="result"></div>
     </div>
-
-    <div class="container">
-        <div class="upload-area">
-            <div style="font-size: 4rem; margin-bottom: 20px;">📁</div>
-            <h2 style="color: #333;">Trascina & Rilascia i File</h2>
-            <p style="color: #666; margin: 15px 0;">
-                Supporta qualsiasi tipo di file • Crittografia SSL • Download veloci
-            </p>
-            <button class="upload-btn" id="uploadBtn">
-                + SCEGLI I FILE DA CARICARE
-            </button>
-            <input type="file" id="fileInput" multiple style="display: none;">
-            <p style="color: #888; margin-top: 20px;">
-                <strong>Limite: 5GB per file • Conservati per 7 giorni</strong>
-            </p>
-        </div>
-    </div>
-
-    <div class="container">
-        <div class="file-list">
-            <h3 style="color: #333; margin-bottom: 20px;">🔥 File Recenti</h3>
-            <div id="filesContainer"></div>
-        </div>
-    </div>
-
-    <div class="footer container">
-        <h3>📁 FileDrop Simple</h3>
-        <p>Servizio di condivisione file 100% gratuito</p>
-        <p style="margin-top: 30px; font-size: 0.9rem; opacity: 0.8;">
-            © 2024 FileDrop Simple. Tutti i diritti riservati.
-        </p>
+    
+    <div style="margin-top: 30px; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; max-width: 500px; margin: 30px auto;">
+        <h3>📁 File richiesti nel repository:</h3>
+        <ul style="text-align: left; display: inline-block;">
+            <li>✅ <code>index.html</code> (questa pagina)</li>
+            <li>❌ <code>package.json</code> <strong style="color: red;">MANCANTE!</strong></li>
+            <li>❌ <code>vercel.json</code> <strong style="color: red;">MANCANTE!</strong></li>
+            <li>❌ <code>api/files.js</code> <strong style="color: red;">MANCANTE!</strong></li>
+        </ul>
     </div>
 
     <script>
-        // Funzionalità base
-        document.getElementById('uploadBtn').addEventListener('click', () => {
-            document.getElementById('fileInput').click();
-        });
-
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            if (this.files.length > 0) {
-                alert('File selezionato: ' + this.files[0].name + '\n\nNota: Questa è una versione demo. In produzione, il file verrebbe caricato su server.');
-            }
-        });
-
-        // Drag & Drop
-        const uploadArea = document.querySelector('.upload-area');
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.style.border = '3px dashed #667eea';
-            uploadArea.style.background = '#f8f9ff';
-        });
-
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.style.border = 'none';
-            uploadArea.style.background = 'white';
-        });
-
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.style.border = 'none';
-            uploadArea.style.background = 'white';
+        async function testApi() {
+            const code = document.getElementById('codeInput').value.toUpperCase();
+            const resultDiv = document.getElementById('result');
             
-            if (e.dataTransfer.files.length > 0) {
-                alert('File pronto per upload: ' + e.dataTransfer.files[0].name);
+            resultDiv.style.display = 'block';
+            resultDiv.style.background = '#fff3cd';
+            resultDiv.innerHTML = '<p>🔄 Test in corso: /api/files?code=' + code + '</p>';
+            
+            try {
+                const response = await fetch('/api/files?code=' + code);
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.style.background = '#d4edda';
+                    resultDiv.innerHTML = `
+                        <h3>✅ API FUNZIONANTE!</h3>
+                        <p><strong>Codice:</strong> ${data.code}</p>
+                        <p><strong>File:</strong> ${data.file.name}</p>
+                        <p><strong>Dimensione:</strong> ${data.file.size}</p>
+                        <p><em>${data.message}</em></p>
+                        <a href="${data.file.url}" target="_blank" style="color: #2196F3;">Prova download</a>
+                    `;
+                } else {
+                    resultDiv.style.background = '#f8d7da';
+                    resultDiv.innerHTML = `<h3>❌ ${data.error}</h3>`;
+                }
+            } catch (error) {
+                resultDiv.style.background = '#f8d7da';
+                resultDiv.innerHTML = `
+                    <h3>🚨 ERRORE DI CONNESSIONE</h3>
+                    <p>${error.message}</p>
+                    <p><strong>Motivo:</strong> Mancano i file di configurazione per Vercel.</p>
+                `;
             }
-        });
+        }
+        
+        // Test automatico
+        setTimeout(testApi, 1000);
     </script>
 </body>
 </html>
