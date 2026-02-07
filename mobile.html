@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoDrop Mobile - Carica File</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .upload-area {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border: 3px dashed rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .upload-area.active {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.3rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 20px 0;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .file-list {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 5px;
+        }
+        
+        .code-section {
+            display: none;
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .code-display {
+            font-size: 4rem;
+            font-weight: bold;
+            letter-spacing: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 30px 0;
+            padding: 20px;
+            border: 3px dashed #667eea;
+            border-radius: 20px;
+        }
+        
+        .instructions {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 25px 0;
+            text-align: left;
+            color: #666;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .ad-banner {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            color: #333;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">📱</div>
+            <h1>GoDrop Mobile</h1>
+            <p class="subtitle">Carica file dal telefono e scarica sul computer</p>
+        </div>
+        
+        <!-- Upload Area -->
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁</div>
+            <h2 style="color: #333; margin-bottom: 10px;">Carica i tuoi file</h2>
+            <p style="color: #666; margin-bottom: 30px;">
+                Scegli foto, video o documenti dal tuo telefono.<br>
+                <strong style="color: #667eea;">Limite: 5GB per file</strong>
+            </p>
+            
+            <button class="upload-btn" id="uploadBtn">
+                + SCEGLI I FILE
+            </button>
+            <input type="file" id="fileInput" multiple style="display: none;">
+            
+            <p style="color: #888; margin-top: 20px; font-size: 0.9rem;">
+                I file saranno disponibili per 24 ore
+            </p>
+        </div>
+        
+        <!-- File List -->
+        <div class="file-list" id="fileList" style="display: none;">
+            <h3 style="margin-bottom: 15px;">File caricati</h3>
+            <div id="filesContainer"></div>
+        </div>
+        
+        <!-- Code Section -->
+        <div class="code-section" id="codeSection">
+            <div style="font-size: 4rem; margin-bottom: 20px;">✅</div>
+            <h2 style="margin-bottom: 10px;">File caricato con successo!</h2>
+            <p style="color: #666; margin-bottom: 30px;">Usa questo codice sul sito web:</p>
+            
+            <div class="code-display" id="codeDisplay">
+                ABCD
+            </div>
+            
+            <button class="upload-btn" onclick="copyCode()" style="background: #2196F3;">
+                📋 Copia Codice
+            </button>
+            
+            <div class="instructions">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>Vai sul sito web GoDrop dal computer</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>Inserisci il codice qui sopra</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>Scarica il file sul tuo PC</div>
+                </div>
+            </div>
+            
+            <p style="color: #666; font-size: 0.9rem; margin-top: 20px;">
+                Il codice scade tra <strong id="expiryTime">24 ore</strong><br>
+                Condividilo solo con chi vuoi
+            </p>
+        </div>
+        
+        <!-- Ad Banner -->
+        <div class="ad-banner">
+            <p style="margin-bottom: 15px;">🎁 Grazie per usare GoDrop!</p>
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">
+                Questo servizio è gratuito grazie ai nostri sponsor
+            </p>
+            <button class="upload-btn" onclick="showSponsor()" style="padding: 15px; font-size: 1.1rem;">
+                🏆 Scopri le offerte sponsor
+            </button>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>GoDrop - Servizio di trasferimento file</p>
+            <p style="margin-top: 10px;">
+                <a href="/" style="color: white; text-decoration: none;">← Torna al sito principale</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Elementi DOM
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileInput = document.getElementById('fileInput');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileList = document.getElementById('fileList');
+        const codeSection = document.getElementById('codeSection');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const filesContainer = document.getElementById('filesContainer');
+
+        // Stato dell'app
+        let uploadedFiles = [];
+        let currentCode = '';
+
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carica file salvati (se presenti)
+            const savedFiles = localStorage.getItem('goDropFiles');
+            if (savedFiles) {
+                uploadedFiles = JSON.parse(savedFiles);
+                updateFileList();
+            }
+        });
+
+        // Event Listeners
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        
+        fileInput.addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                Array.from(this.files).forEach(file => {
+                    uploadFile(file);
+                });
+            }
+        });
+
+        // Drag and Drop
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('active');
+        });
+
+        uploadArea.addEventListener('dragleave', function() {
+            this.classList.remove('active');
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('active');
+            
+            if (e.dataTransfer.files.length > 0) {
+                Array.from(e.dataTransfer.files).forEach(file => {
+                    uploadFile(file);
+                });
+            }
+        });
+
+        // Funzione di upload
+        function uploadFile(file) {
+            // Controlla dimensione (5GB max)
+            const maxSize = 5 * 1024 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert(`File troppo grande! Massimo 5GB.\n\nFile: ${file.name}\nDimensione: ${formatBytes(file.size)}`);
+                return;
+            }
+
+            // Crea elemento file
+            const fileId = Date.now() + Math.random();
+            const fileItem = {
+                id: fileId,
+                name: file.name,
+                size: file.size,
+                type: file.type,
+                progress: 0
+            };
+
+            uploadedFiles.push(fileItem);
+            updateFileList();
+            
+            // Simula upload
+            simulateUploadProgress(fileId, file);
+        }
+
+        function simulateUploadProgress(fileId, file) {
+            const fileItem = uploadedFiles.find(f => f.id === fileId);
+            if (!fileItem) return;
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 20 + 5;
+                if (progress > 100) progress = 100;
+                
+                fileItem.progress = progress;
+                updateFileList();
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    fileItem.completed = true;
+                    updateFileList();
+                    
+                    // Se tutti i file sono completati, genera codice
+                    if (uploadedFiles.every(f => f.completed)) {
+                        generateCode();
+                    }
+                }
+            }, 300);
+        }
+
+        function updateFileList() {
+            if (uploadedFiles.length === 0) {
+                fileList.style.display = 'none';
+                return;
+            }
+
+            fileList.style.display = 'block';
+            filesContainer.innerHTML = '';
+
+            uploadedFiles.forEach(file => {
+                const div = document.createElement('div');
+                div.className = 'file-item';
+                div.innerHTML = `
+                    <div style="flex: 1;">
+                        <div style="font-weight: bold; margin-bottom: 5px;">${file.name}</div>
+                        <div style="font-size: 0.9rem; color: #666;">${formatBytes(file.size)}</div>
+                        ${file.completed ? 
+                            '<div style="color: #4CAF50; font-size: 0.8rem;">✅ Completato</div>' : 
+                            `<div class="progress-bar">
+                                <div class="progress" style="width: ${file.progress}%"></div>
+                            </div>
+                            <div style="font-size: 0.8rem; color: #666; text-align: right;">${Math.round(file.progress)}%</div>`
+                        }
+                    </div>
+                `;
+                filesContainer.appendChild(div);
+            });
+
+            // Salva in localStorage
+            localStorage.setItem('goDropFiles', JSON.stringify(uploadedFiles));
+        }
+
+        function generateCode() {
+            // Genera codice a 4 lettere casuali
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            let code = '';
+            for (let i = 0; i < 4; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+
+            currentCode = code;
+            codeDisplay.textContent = code;
+            codeSection.style.display = 'block';
+            
+            // Scroll alla sezione codice
+            setTimeout(() => {
+                codeSection.scrollIntoView({ behavior: 'smooth' });
+            }, 500);
+
+            // Salva codice sul server (simulato)
+            saveToServer(code, uploadedFiles);
+            
+            // Mostra notifica
+            showNotification(`Codice generato: ${code}`);
+        }
+
+        function saveToServer(code, files) {
+            // In produzione, invieresti al tuo backend
+            console.log(`Salvato sul server: Codice ${code}`);
+            console.log('File:', files);
+            
+            // Simula chiamata API
+            fetch('/api/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code, files })
+            }).catch(err => console.log('Simulated API call'));
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(currentCode).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copiato!';
+                btn.style.background = '#4CAF50';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '#2196F3';
+                }, 2000);
+                
+                showNotification('Codice copiato negli appunti!');
+            });
+        }
+
+        function showSponsor() {
+            alert('🎁 Offerta sponsorizzata!\n\nI nostri sponsor supportano questo servizio gratuito. Grazie per l\'interesse!');
+            
+            // Simula click su pubblicità
+            console.log('💰 Sponsor click revenue: +€0.10');
+        }
+
+        function showNotification(message) {
+            // Crea notifica temporanea
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+                background: white;
+                color: #333;
+                padding: 15px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                z-index: 1000;
+                text-align: center;
+                animation: slideInUp 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <div style="font-size: 1.5rem;">💡</div>
+                    <div>${message}</div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutDown 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+    </script>
+</body>
+</html>
