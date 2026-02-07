@@ -4,6 +4,22 @@
     {
       "src": "api/files.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "api/apifiles.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/apistats.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/apidownload[code].js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "api/apisave.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -12,8 +28,24 @@
       "dest": "/api/files.js"
     },
     {
-      "src": "/(.*)",
+      "src": "/api/stats",
+      "dest": "/api/apistats.js"
+    },
+    {
+      "src": "/api/save",
+      "dest": "/api/apisave.js"
+    },
+    {
+      "src": "/api/download",
+      "dest": "/api/apifiles.js"
+    },
+    {
+      "src": "/",
       "dest": "/index.html"
+    },
+    {
+      "src": "/mobile",
+      "dest": "/mobile.html"
     }
   ]
 }
