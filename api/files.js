@@ -1,4 +1,25 @@
 // api/files.js - SEMPLICE API DI TEST
+
+
+
+// TEST: Verifica che l'API risponda
+console.log('✅ API files.js caricata su Vercel');
+
+export default async function handler(req, res) {
+  console.log('📞 Ricevuta richiesta a /api/files:', req.method, req.query);
+  
+  // Risposta di test immediata
+  return res.json({
+    success: true,
+    message: 'API Vercel funzionante!',
+    timestamp: new Date().toISOString(),
+    method: req.method,
+    query: req.query
+  });
+}
+
+
+
 export default function handler(req, res) {
   // Permetti chiamate da qualsiasi dominio
   res.setHeader('Access-Control-Allow-Origin', '*');
